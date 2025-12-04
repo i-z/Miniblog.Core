@@ -23,6 +23,7 @@
 		<PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.477" />
 		<PackageReference Include="LigerShark.WebOptimizer.Sass" Version="3.0.143" />
 		<PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" Version="7.5.0" />
+		<PackageReference Include="Microsoft.ClearScript.V8.Native.win-x86" Version="7.5.0" />
 		<PackageReference Include="Microsoft.SyndicationFeed.ReaderWriter" Version="1.0.2" />
 		<PackageReference Include="System.Linq.Async" Version="6.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
