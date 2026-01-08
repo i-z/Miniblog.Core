@@ -44,6 +44,13 @@
             });
         });
     </script>
+
+    @* admin-скрипты *@
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <script src="~/js/admin.js" async defer></script>
+        <link rel="stylesheet" href="~/css/admin.scss" />
+    }
 }
 
 @section Head {
@@ -65,11 +72,3 @@
 <div id="article-content" itemprop="articleBody mainEntityOfPage" cdnify>
     @Html.Raw(Model.RenderContent())
 </div>
-
-@if (User?.Identity?.IsAuthenticated == true)
-{  
-    @section Scripts {  
-        <script src="~/js/admin.js" async defer></script>
-        <link rel="stylesheet" href="~/css/admin.scss" />
-    }
-}
