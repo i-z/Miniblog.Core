@@ -7,26 +7,40 @@
 }
 
 @section Scripts {
-    <script>
+     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const button = document.getElementById("copy-article-btn");
             const content = document.getElementById("article-content");
+            const copyBtn = document.getElementById("copy-article-btn");
+            const downloadBtn = document.getElementById("download-article-btn");
 
-            if (!button || !content) return;
+            if (!content) return;
 
-            button.addEventListener("click", async () => {
+            // 📋 Копирование
+            copyBtn?.addEventListener("click", async () => {
                 try {
-                    const text = content.innerText;
-                    await navigator.clipboard.writeText(text);
-
-                    button.textContent = "✅ Скопировано";
-                    setTimeout(() => {
-                        button.textContent = "📋 Скопировать страницу";
-                    }, 2000);
-                } catch (err) {
-                    console.error("Ошибка копирования:", err);
+                    await navigator.clipboard.writeText(content.innerText);
+                    copyBtn.textContent = "✅ Скопировано";
+                    setTimeout(() => copyBtn.textContent = "📋 Скопировать", 2000);
+                } catch {
                     alert("Не удалось скопировать текст");
                 }
+            });
+
+            // ⬇️ Скачивание
+            downloadBtn?.addEventListener("click", () => {
+                const text = content.innerText;
+
+                const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "@(Model.Slug ?? "article").txt";
+                document.body.appendChild(a);
+                a.click();
+
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             });
         });
     </script>
@@ -40,6 +54,12 @@
 		id="copy-article-btn"
 		class="copy-article-btn">
 	📋 Скопировать страницу
+</button>
+
+<button type="button"
+        id="download-article-btn"
+        class="article-action-btn">
+    ⬇️ Скачать
 </button>
 
 <div id="article-content" itemprop="articleBody mainEntityOfPage" cdnify>
