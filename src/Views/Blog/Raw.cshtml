@@ -1,0 +1,55 @@
+@model Post
+@inject IOptionsSnapshot<BlogSettings> settings
+@{
+    ViewData[Constants.Title] = Model.Title;
+    ViewData[Constants.Description] = Model.Excerpt;
+    string host = $"{Context.Request.Scheme}://{Context.Request.Host}";
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.getElementById("copy-article-btn");
+            const content = document.getElementById("article-content");
+
+            if (!button || !content) return;
+
+            button.addEventListener("click", async () => {
+                try {
+                    const text = content.innerText;
+                    await navigator.clipboard.writeText(text);
+
+                    button.textContent = "✅ Скопировано";
+                    setTimeout(() => {
+                        button.textContent = "📋 Скопировать страницу";
+                    }, 2000);
+                } catch (err) {
+                    console.error("Ошибка копирования:", err);
+                    alert("Не удалось скопировать текст");
+                }
+            });
+        });
+    </script>
+}
+
+@section Head {
+    <link rel="canonical" href="@(host + Model.GetLink())" />
+}
+
+<button type="button"
+		id="copy-article-btn"
+		class="copy-article-btn">
+	📋 Скопировать страницу
+</button>
+
+<div id="article-content" itemprop="articleBody mainEntityOfPage" cdnify>
+    @Html.Raw(Model.RenderContent())
+</div>
+
+@if (User?.Identity?.IsAuthenticated == true)
+{  
+    @section Scripts {  
+        <script src="~/js/admin.js" async defer></script>
+        <link rel="stylesheet" href="~/css/admin.scss" />
+    }
+}

@@ -185,6 +185,15 @@ public partial class BlogController(IBlogService blog, IOptionsSnapshot<BlogSett
         return post is null ? this.NotFound() : this.View(post);
     }
 
+    [Route("/raw/{slug?}")]
+    [OutputCache(PolicyName = "default")]
+    public async Task<IActionResult> Raw(string slug)
+    {
+        var post = await blog.GetPostBySlug(slug).ConfigureAwait(true);
+
+        return post is null ? this.NotFound() : this.View(post);
+    }
+
     /// <summary>
     /// Redirects the old Miniblog URL format to the new blog URL format.
     /// </summary>

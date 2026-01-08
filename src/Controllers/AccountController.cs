@@ -46,7 +46,7 @@ public class AccountController(IUserServices userServices) : Controller
 
         var principle = new ClaimsPrincipal(identity);
         var properties = new AuthenticationProperties { IsPersistent = model.RememberMe };
-        await this.HttpContext.SignInAsync(principle, properties).ConfigureAwait(false);
+        await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle, properties).ConfigureAwait(false);
 
         return this.LocalRedirect(returnUrl ?? "/");
     }
