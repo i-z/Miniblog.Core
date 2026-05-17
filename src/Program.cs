@@ -31,6 +31,7 @@ builder.Services.AddSingleton<IUserServices, BlogUserServices>();
 builder.Services.AddSingleton<IBlogService, FileBlogService>();
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("blog"));
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpClient();
 builder.Services.AddMetaWeblog<MetaWeblogService>();
 
 // Progressive Web Apps https://github.com/madskristensen/WebEssentials.AspNetCore.ServiceWorker
