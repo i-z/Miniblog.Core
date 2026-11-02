@@ -26,6 +26,14 @@ builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddCors(options => options.AddPolicy("PikabuPayments", policy =>
+{
+    var origins = builder.Configuration.GetSection("Pikabu:AllowedOrigins").Get<string[]>() ?? [];
+    if (origins.Length > 0)
+    {
+        policy.WithOrigins(origins).WithMethods("POST").WithHeaders("Content-Type");
+    }
+}));
 
 builder.Services.AddSingleton<IUserServices, BlogUserServices>();
 builder.Services.AddSingleton<IBlogService, FileBlogService>();
@@ -146,6 +154,7 @@ app.UseAuthentication();
 app.UseWebMarkupMin();
 
 app.UseRouting();
+app.UseCors();
 
 app.UseAuthorization();
 
